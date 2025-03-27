@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>eBook Reader Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- App Bar -->
+    <header class="app-bar">
+        <h1>eBook Reader Hub</h1>
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <p class="subtitle">Choose a reader format:</p>
+
+        <div class="button-group">
+            <a href="epub.html" class="card">
+                <span class="icon">📖</span>
+                <span class="label">EPUB Reader</span>
+            </a>
+
+            <a href="cbz.html" class="card">
+                <span class="icon">🖼️</span>
+                <span class="label">CBZ Reader</span>
+            </a>
+
+            <a href="pdf.html" class="card">
+                <span class="icon">📄</span>
+                <span class="label">PDF Reader</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById("theme-toggle");
+        const currentTheme = localStorage.getItem("theme");
+
+        if (currentTheme === "dark") {
+            document.body.classList.add("dark-mode");
+            themeToggle.textContent = "☀️";
+        }
+
+        themeToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("theme", "dark");
+                themeToggle.textContent = "☀️";
+            } else {
+                localStorage.setItem("theme", "light");
+                themeToggle.textContent = "🌙";
+            }
+        });
+    </script>
+
+</body>
+
+</html>
