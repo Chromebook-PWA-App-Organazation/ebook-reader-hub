@@ -1,31 +1,113 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <!-- Tell the browser to be responsive to screen width -->
+    <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <!-- load all styles css -->
+    <title>Comic Book (CBZ) Reader</title>
+
+    <!-- Styles -->
     <link href="./assets/css/styles.css" rel="stylesheet">
     <link href="https://unpkg.com/lightgallery@1/dist/css/lightgallery.min.css" rel="stylesheet">
     <link href="https://unpkg.com/dropzone/dist/dropzone.css" rel="stylesheet" type="text/css" />
-    <title>Comic Book (CBZ) Reader</title>
+
+    <style>
+        .tab-button {
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .tab-button.active {
+            background-color: #0056b3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #dropzone-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border: 2px dashed #007bff;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
 
-                <button class="tab-button active" id="tab" tab="upload">Choose file from your computer</button>
-                <button class="tab-button" id="tab" tab="internal">Open file stored in the server</button>
-    <!-- load all scripts -->
-    <!-- TODO: Remove jQuery dependency. Currently being used by lightGallery v1-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"
-        integrity="sha512-rCjfoab9CVKOH/w/T6GbBxnAH5Azhy4+q1EXW5XEURefHbIkRbQ++ZR+GBClo3/d3q583X/gO4FKmOFuhkKrdA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="./assets/js/uncompress/uncompress.js"></script>
+    <button class="tab-button active" id="upload-tab">Choose file from your computer</button>
+    <button class="tab-button" id="server-tab">Open file stored in the server</button>
+
+    <!-- Dropzone Upload Container -->
+    <div id="dropzone-container" class="hidden">
+        <form action="/upload" class="dropzone" id="cbz-dropzone">
+            <div class="dz-message">Drop your CBZ file here or click to upload.</div>
+        </form>
+    </div>
+
+    <div id="server-files" class="hidden">
+        <p>Fetching files from the server...</p>
+        <ul id="file-list"></ul>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
     <script src="https://unpkg.com/lightgallery@1/dist/js/lightgallery-all.min.js"></script>
     <script src="https://unpkg.com/dropzone/dist/dropzone-min.js"></script>
-    <script src="./assets/js/script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const uploadTab = document.getElementById("upload-tab");
+            const serverTab = document.getElementById("server-tab");
+            const dropzoneContainer = document.getElementById("dropzone-container");
+            const serverFiles = document.getElementById("server-files");
+
+            // Initialize Dropzone
+            Dropzone.autoDiscover = false;
+            const cbzDropzone = new Dropzone("#cbz-dropzone", {
+                url: "/upload", // Change to your actual upload URL
+                acceptedFiles: ".cbz",
+                maxFiles: 1,
+                dictDefaultMessage: "Drop your CBZ file here or click to upload."
+            });
+
+            // Handle tab switching
+            function switchTab(tab) {
+                if (tab === "upload") {
+                    uploadTab.classList.add("active");
+                    serverTab.classList.remove("active");
+                    dropzoneContainer.classList.remove("hidden");
+                    serverFiles.classList.add("hidden");
+                } else if (tab === "server") {
+                    serverTab.classList.add("active");
+                    uploadTab.classList.remove("active");
+                    dropzoneContainer.classList.add("hidden");
+                    serverFiles.classList.remove("hidden");
+                    loadServerFiles();
+                }
+            }
+
+            // Fetch server files (Simulated)
+            function loadServerFiles() {
+                const fileList = document.getElementById("file-list");
+                fileList.innerHTML = "<li>Comic1.cbz</li><li>Comic2.cbz</li>";
+            }
+
+            // Event Listeners
+            uploadTab.addEventListener("click", () => switchTab("upload"));
+            serverTab.addEventListener("click", () => switchTab("server"));
+        });
+    </script>
+
 </body>
 
 </html>
