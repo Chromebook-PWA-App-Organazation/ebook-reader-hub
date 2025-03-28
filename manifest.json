@@ -1,11 +1,12 @@
 {
     "name": "eBook Reader Hub",
-    "short_name": "eBook Readre",
+    "short_name": "eBook Reader",
     "description": "Read eBooks/PDF/Comic Books with ease!",
     "start_url": "https://testing-platform-games.github.io/ebook-reader-browser/",
     "display": "standalone",
     "background_color": "#6200ea",
     "theme_color": "#6200ea",
+    "color_scheme": "light dark",
     "icons": [
         {
             "src": "./icons/icon-192x192.png",
