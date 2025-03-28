@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Flipbook Reader</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.css">
+</head>
+<body>
+
+    <header class="app-bar">
+        <h1>PDF Flipbook</h1>
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+    </header>
+
+    <div class="container">
+        <input type="file" id="pdfFile" accept=".pdf" hidden>
+        <label for="pdfFile" class="fab">📂</label>
+        <div id="pdf-container">
+            <div id="flipbook"></div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="./epub.html">📖 EPUB</a>
+        <a href="./cbz.html">🖼️ CBZ</a>
+        <a href="./pdf.html" class="active">📄 PDF</a>
+    </nav>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.js"></script>
+    <script src="./script.js"></script>
+
+</body>
+</html>

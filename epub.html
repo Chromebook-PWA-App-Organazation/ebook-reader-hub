@@ -1,58 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EPUB Reader</title>
-  <style>
-    #viewer {
-      width: 100%;
-      height: 600px;
-      border: 1px solid #ccc;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPUB Reader</title>
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <!-- File Upload Button -->
-  <input type="file" id="file-input" accept=".epub" />
-  
-  <!-- Container to render the EPUB -->
-  <div id="viewer"></div>
 
-  <!-- Include EPUB.js library -->
-  <script src="./epub.min.js"></script>
+    <header class="app-bar">
+        <h1>EPUB Reader</h1>
+        <button id="theme-toggle" class="theme-toggle">🌙</button>
+    </header>
 
-  <script>
-    document.getElementById('file-input').addEventListener('change', function(event) {
-      const file = event.target.files[0];
+    <div class="container">
+        <input type="file" id="epubFile" accept=".epub" hidden>
+        <label for="epubFile" class="fab">📂</label>
+        <div id="epub-container"></div>
+    </div>
 
-      if (file && file.name.endsWith('.epub')) {
-        const reader = new FileReader();
-        
-        // Load the EPUB file as an array buffer
-        reader.onload = function(e) {
-          const book = e.target.result;
+    <nav class="bottom-nav">
+        <a href="./epub.html" class="active">📖 EPUB</a>
+        <a href="./cbz.html">🖼️ CBZ</a>
+        <a href="./pdf.html">📄 PDF</a>
+    </nav>
 
-          // Initialize the EPUB book using EPUB.js
-          const ePubBook = ePub(book);
-          
-          // Open the book in the viewer
-          const viewer = document.getElementById('viewer');
-          
-          // Use the default rendering options
-          ePubBook.renderTo(viewer);
-          
-          // Optionally, you can navigate to the first chapter after the book is loaded
-          ePubBook.openTo('epubcfi(/6/2[cover])');
-        };
-
-        // Read the EPUB file as binary
-        reader.readAsArrayBuffer(file);
-      } else {
-        alert('Please select a valid EPUB file.');
-      }
-    });
-  </script>
+    <script src="./script.js"></script>
 </body>
 </html>

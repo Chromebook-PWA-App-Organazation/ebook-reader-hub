@@ -1,0 +1,43 @@
+{
+    "name": "eBook Reader Hub",
+    "short_name": "eBook Readre",
+    "description": "Read eBooks/PDF/Comic Books with ease!",
+    "start_url": "https://testing-platform-games.github.io/ebook-reader-browser/",
+    "display": "standalone",
+    "background_color": "#6200ea",
+    "theme_color": "#6200ea",
+    "icons": [
+        {
+            "src": "./icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "./preview/preview-1.png",
+            "sizes": "1080x1920",
+            "type": "image/png"
+        },
+        {
+            "src": "./preview/preview-2.png",
+            "sizes": "1080x1920",
+            "type": "image/png"
+        },
+        {
+            "src": "./preview/preview-3.png",
+            "sizes": "1080x1920",
+            "type": "image/png"
+        },
+        {
+            "src": "./preview/preview-4.png",
+            "sizes": "1080x1920",
+            "type": "image/png"
+        }
+    ]
+}
