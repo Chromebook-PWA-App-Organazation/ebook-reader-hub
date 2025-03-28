@@ -8,11 +8,18 @@
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#ffffff">
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js')
-                .then(reg => console.log('Service Worker Registered', reg))
-                .catch(err => console.log('Service Worker Registration Failed', err));
-        }
+                        <link rel="manifest" href="./manifest.json">
+                <script>
+                    if ('serviceWorker' in navigator) {
+                        window.addEventListener("load", () => {
+                            navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                                console.log('ServiceWorker registered');
+                              }).catch(function(err) {
+                                console.log('ServiceWorker error: ', err);
+                              });
+                        })
+                    }
+                </script>    
     </script>
 </head>
 <body>
