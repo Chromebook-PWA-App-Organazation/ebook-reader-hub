@@ -35,6 +35,23 @@
             text-align: left;
         }
 
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .button {
+            background-color: #A4C639;
+            color: black;
+            font-size: 18px;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
         #imageContainer {
             display: flex;
             flex-direction: column;
@@ -50,10 +67,8 @@
             margin-bottom: 5px;
         }
 
-        #pageCounter {
-            text-align: center;
-            padding: 10px;
-            font-size: 16px;
+        #cbzFile {
+            display: none;
         }
     </style>
 </head>
@@ -65,36 +80,21 @@
 
     <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt; Back</button>
 
-    <div id="messageContainer">
-        <p class="message" id="loadingMessage">Loading... (0 / 0)</p>
+    <div class="container">
+        <input type="file" id="cbzFile" accept=".cbz,.cbr">
+        <label for="cbzFile" class="button">📂 Choose CBZ File</label>
     </div>
-
-    <input type="file" id="fileInput" accept=".cbz,.cbr" style="display: block; margin: 20px auto;">
 
     <div id="imageContainer"></div>
 
-    <p id="pageCounter">Page 0 / 0</p>
-
     <script>
         const imageContainer = document.getElementById('imageContainer');
-        const loadingMessage = document.getElementById("loadingMessage");
-        const pageCounter = document.getElementById("pageCounter");
 
-        document.getElementById('fileInput').addEventListener('change', async function(event) {
+        document.getElementById('cbzFile').addEventListener('change', async function(event) {
             const file = event.target.files[0];
             if (!file) return;
-            loadingMessage.style.opacity = "1";
 
-            const totalPages = await loadBook(file);
-            console.log(`'${file.name}' loaded with ${totalPages} pages.`);
-
-            setTimeout(() => {
-                loadingMessage.style.opacity = "0";
-            }, 500);
-
-            imageContainer.addEventListener('scroll', function() {
-                setPageCounter(totalPages);
-            });
+            await loadBook(file);
         });
 
         async function loadBook(file) {
@@ -107,8 +107,6 @@
                 .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
 
             imageContainer.innerHTML = '';
-            const totalPages = imageFiles.length;
-            let pagesLoaded = 1;
 
             for (const filename of imageFiles) {
                 const imgData = await contents.files[filename].async('blob');
@@ -118,26 +116,7 @@
                 img.src = imgUrl;
                 img.classList.add("cbz-image");
                 imageContainer.appendChild(img);
-
-                loadingMessage.textContent = `Loading... (${pagesLoaded} / ${totalPages})`;
-                pagesLoaded += 1;
             }
-
-            return totalPages;
-        }
-
-        function setPageCounter(pageCount) {
-            const images = document.querySelectorAll(".cbz-image");
-            let currentPage = 0;
-
-            images.forEach((img, index) => {
-                const rect = img.getBoundingClientRect();
-                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-                    currentPage = index + 1;
-                }
-            });
-
-            pageCounter.textContent = `Page ${currentPage} / ${pageCount}`;
         }
     </script>
 
