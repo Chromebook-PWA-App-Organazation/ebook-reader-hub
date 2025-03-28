@@ -9,7 +9,7 @@
 <body>
 
     <header class="app-bar">
-        <button id="back-button" class="back-button">⬅ Back</button>
+        <button onclick="location.href='/ebook-reader-browser/'" class="back-button">← Back</button>
         <h1>PDF Viewer</h1>
         <button id="theme-toggle" class="theme-toggle">🌙</button>
     </header>
@@ -26,24 +26,8 @@
         document.getElementById("pdfFile").addEventListener("change", function (event) {
             const file = event.target.files[0];
             if (file) {
-                const fileURL = URL.createObjectURL(file);
-                document.getElementById("pdfViewer").src = fileURL;
+                document.getElementById("pdfViewer").src = URL.createObjectURL(file);
             }
-        });
-
-        // Dark Mode Toggle
-        document.getElementById("theme-toggle").addEventListener("click", function () {
-            document.body.classList.toggle("dark-mode");
-            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
-        });
-
-        if (localStorage.getItem("darkMode") === "enabled") {
-            document.body.classList.add("dark-mode");
-        }
-
-        // Back Button
-        document.getElementById("back-button").addEventListener("click", function () {
-            window.location.href = "/ebook-reader-browser/";
         });
     </script>
 
