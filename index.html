@@ -6,24 +6,25 @@
     <title>eBook Reader Hub</title>
     <link rel="stylesheet" href="./styles.css">
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#A4C639">
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener("load", () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                .then(() => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Error:', err));
-            });
+                navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+                    console.log('ServiceWorker registered');
+                }).catch(function(err) {
+                    console.log('ServiceWorker error: ', err);
+                });
+            })
         }
     </script>
 </head>
 <body>
     <header class="app-bar">
-        <h1>eBook Reader Hub</h1>
+        eBook Reader Hub
     </header>
 
     <div class="container">
-        <h2>Select File Type</h2>
         <button onclick="location.href='./epub.html'" class="button">📖 EPUB</button>
         <button onclick="location.href='./cbz.html'" class="button">🖼️ CBZ</button>
         <button onclick="location.href='./pdf.html'" class="button">📄 PDF</button>
