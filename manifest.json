@@ -1,12 +1,12 @@
 {
     "name": "eBook Reader Hub",
-    "short_name": "eBook Reader",
-    "description": "Read eBooks/PDF/Comic Books with ease!",
-    "start_url": "https://testing-platform-games.github.io/ebook-reader-browser/",
+    "short_name": "eBook Reader Hub",
+    "description": "Read eBooks, PDFs, and Comic Books with ease!",
+    "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#6200ea",
-    "theme_color": "#6200ea",
-    "color_scheme": "light dark",
+    "background_color": "#A4C639",
+    "theme_color": "#A4C639",
+    "orientation": "portrait",
     "icons": [
         {
             "src": "./icons/icon-192x192.png",
@@ -17,6 +17,12 @@
             "src": "./icons/icon-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
+        },
+        {
+            "src": "./icons/icon-1024x1024.png",
+            "sizes": "1024x1024",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "screenshots": [
@@ -35,5 +41,15 @@
             "sizes": "1080x1920",
             "type": "image/png"
         }
-    ]
+    ],
+    "permissions": [
+        "storage",
+        "fullscreen"
+    ],
+    "categories": [
+        "books",
+        "utilities"
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false
 }
