@@ -1,128 +1,43 @@
-/* General Styles */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #F5F5F5;
-    color: #000;
+    text-align: center;
 }
 
-/* Dark Mode */
-.dark-mode {
-    background-color: #121212;
-    color: white;
-}
-
-/* Header (App Bar) */
 .app-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     background-color: #A4C639;
     color: white;
     padding: 15px;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 1.5em;
+    text-align: center;
 }
 
-.app-bar button {
-    background: none;
+.button, .upload-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    background: #f0f0f0;
     border: none;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+    font-size: 1.2em;
 }
 
-/* Section Titles */
-.section-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #A4C639;
-    margin: 15px 15px 5px;
+.button:hover, .upload-button:hover {
+    background: #ddd;
 }
 
-/* Containers */
-.container {
-    padding: 10px 15px;
-}
-
-/* Notification Toggle */
-.toggle-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.toggle-container label {
-    font-size: 16px;
-}
-
-/* Toggle Switch */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 34px;
-    height: 20px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 20px;
-    transition: 0.3s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    border-radius: 50%;
-    transition: 0.3s;
-}
-
-/* When switch is checked */
-input:checked + .slider {
-    background-color: #A4C639;
-}
-
-input:checked + .slider:before {
-    transform: translateX(14px);
-}
-
-/* Checkbox */
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: white;
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.checkbox-container label {
-    font-size: 16px;
-}
-
-.checkbox {
-    width: 18px;
-    height: 18px;
-    accent-color: #A4C639;
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+    .app-bar {
+        background-color: #1E1E1E;
+    }
+    .button, .upload-button {
+        background-color: #333;
+        color: white;
+    }
 }
