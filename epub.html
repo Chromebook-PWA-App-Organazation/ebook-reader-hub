@@ -20,21 +20,31 @@
         <input type="file" id="epubFile" accept=".epub" hidden>
         <label for="epubFile" class="button">📂 Choose EPUB File</label>
         <div id="epub-container"></div>
+        <p id="error-message" style="color: red; display: none;">Error loading EPUB. Please check the file.</p>
     </div>
 
     <script>
-        document.getElementById("epubFile").addEventListener("change", function (event) {
+        document.getElementById("epubFile").addEventListener("change", async function (event) {
             const file = event.target.files[0];
             if (file) {
-                const book = ePub(URL.createObjectURL(file)); // Create an EPUB instance
-                const rendition = book.renderTo("epub-container", {
-                    width: "100%",
-                    height: "600px"
-                });
+                try {
+                    const arrayBuffer = await file.arrayBuffer(); // Read file as ArrayBuffer
+                    const book = ePub(arrayBuffer); // Open EPUB from buffer
+                    const rendition = book.renderTo("epub-container", {
+                        width: "100%",
+                        height: "600px"
+                    });
 
-                book.ready.then(() => {
-                    rendition.display();
-                });
+                    book.ready.then(() => {
+                        rendition.display();
+                    }).catch(err => {
+                        console.error("EPUB Load Error:", err);
+                        document.getElementById("error-message").style.display = "block";
+                    });
+                } catch (error) {
+                    console.error("File Read Error:", error);
+                    document.getElementById("error-message").style.display = "block";
+                }
             }
         });
     </script>
