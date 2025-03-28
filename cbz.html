@@ -8,50 +8,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
-
     <header class="app-bar">
-        <h1>CBZ Reader</h1>
-        <button onclick="window.location.href='/ebook-reader-browser/'" class="back-button">⬅ Back</button>
+        CBZ Reader
     </header>
+    
+    <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt;</button>
 
     <div class="container">
         <input type="file" id="cbzFile" accept=".cbz" hidden>
-        <label for="cbzFile" class="upload-button">📂 Choose CBZ File</label>
-        <div id="cbz-container" class="image-gallery"></div>
+        <label for="cbzFile" class="button">📂 Choose CBZ File</label>
+        <div id="cbz-container"></div>
     </div>
 
     <script>
         document.getElementById("cbzFile").addEventListener("change", function (event) {
             const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                JSZip.loadAsync(e.target.result).then(function (zip) {
-                    const imageContainer = document.getElementById("cbz-container");
-                    imageContainer.innerHTML = "";  // Clear previous content
-
-                    // Extract all image files
-                    const fileNames = Object.keys(zip.files)
-                        .filter(name => name.match(/\.(jpg|jpeg|png)$/i)) // Only images
-                        .sort((a, b) => a.localeCompare(b, undefined, { numeric: true })); // Natural sorting
-
-                    // Ensure all images load properly
-                    Promise.all(
-                        fileNames.map(name => zip.files[name].async("blob").then(blob => {
-                            const img = document.createElement("img");
-                            img.src = URL.createObjectURL(blob);
-                            img.style.maxWidth = "100%";
-                            img.style.margin = "10px auto";
-                            img.loading = "lazy"; // Optimize loading
-                            imageContainer.appendChild(img);
-                        }))
-                    ).catch(err => console.error("Error loading CBZ images:", err));
-                }).catch(err => console.error("Error reading CBZ file:", err));
-            };
-            reader.readAsArrayBuffer(file);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    JSZip.loadAsync(e.target.result).then(function (zip) {
+                        const container = document.getElementById("cbz-container");
+                        container.innerHTML = "";
+                        const fileNames = Object.keys(zip.files).filter(name => name.match(/\.(jpg|jpeg|png)$/i)).sort();
+                        fileNames.forEach(name => {
+                            zip.files[name].async("blob").then(blob => {
+                                const img = document.createElement("img");
+                                img.src = URL.createObjectURL(blob);
+                                img.style.maxWidth = "100%";
+                                img.style.margin = "10px auto";
+                                container.appendChild(img);
+                            });
+                        });
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            }
         });
     </script>
-
 </body>
 </html>
