@@ -1,43 +1,107 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #000000;
     margin: 0;
     padding: 0;
-    text-align: center;
 }
 
-.app-bar {
-    background-color: #A4C639;
-    color: white;
-    padding: 15px;
-    font-size: 1.5em;
-    text-align: center;
+/* Android Green Theme */
+:root {
+    --primary-color: #A4C639;
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --button-background: #A4C639;
+    --button-text: #ffffff;
+    --border-color: #cccccc;
 }
 
-.button, .upload-button {
-    display: block;
-    width: 100%;
-    text-align: left;
-    padding: 15px;
-    background: #f0f0f0;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    font-size: 1.2em;
-}
-
-.button:hover, .upload-button:hover {
-    background: #ddd;
-}
-
+/* Dark Mode Auto-Detection */
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
         color: #ffffff;
     }
+
     .app-bar {
         background-color: #1E1E1E;
+        color: #ffffff;
     }
-    .button, .upload-button {
-        background-color: #333;
-        color: white;
+
+    .button {
+        background-color: #A4C639;
+        color: #000000;
     }
+}
+
+/* Header Bar */
+.app-bar {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 15px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Buttons */
+.button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    text-align: left;
+    background-color: var(--button-background);
+    color: var(--button-text);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #8FAF30;
+}
+
+/* Upload Button */
+.upload-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    background-color: var(--button-background);
+    color: var(--button-text);
+    border: none;
+    cursor: pointer;
+}
+
+.upload-button:hover {
+    background-color: #8FAF30;
+}
+
+/* Back Button */
+.back-button {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    color: #8FAF30;
+}
+
+/* Container */
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Image Gallery */
+.image-gallery img {
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
