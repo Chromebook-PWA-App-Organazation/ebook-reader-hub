@@ -9,6 +9,7 @@
 <body>
 
     <header class="app-bar">
+        <button id="back-button" class="back-button">⬅ Back</button>
         <h1>PDF Viewer</h1>
         <button id="theme-toggle" class="theme-toggle">🌙</button>
     </header>
@@ -39,6 +40,11 @@
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
         }
+
+        // Back Button
+        document.getElementById("back-button").addEventListener("click", function () {
+            window.location.href = "/ebook-reader-browser/";
+        });
     </script>
 
 </body>
