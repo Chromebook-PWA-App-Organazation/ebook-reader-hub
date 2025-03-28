@@ -5,20 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EPUB Reader</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.88/epub.min.js"></script>
 </head>
 <body>
-
     <header class="app-bar">
-        <button onclick="location.href='/ebook-reader-browser/'" class="back-button">← Back</button>
-        <h1>EPUB Reader</h1>
+        EPUB Reader
     </header>
+    
+    <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt;</button>
 
     <div class="container">
         <input type="file" id="epubFile" accept=".epub" hidden>
-        <label for="epubFile" class="upload-button">📂 Choose EPUB File</label>
-        <div id="epub-container"></div>
+        <label for="epubFile" class="button">📂 Choose EPUB File</label>
         <div id="area"></div>
     </div>
 
@@ -39,6 +37,5 @@
             }
         });
     </script>
-
 </body>
 </html>
