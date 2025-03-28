@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Flipbook Reader</title>
     <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.js"></script>
 </head>
 <body>
 
@@ -18,13 +19,52 @@
         <input type="file" id="pdfFile" accept=".pdf" hidden>
         <label for="pdfFile" class="upload-button">📂 Choose PDF File</label>
         <div id="pdf-container">
-            <div id="flipbook"></div>
+            <div id="flipbook" class="flipbook"></div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4/turn.min.js"></script>
-    <script src="./script.js"></script>
+    <script>
+        document.getElementById("pdfFile").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileReader = new FileReader();
+                fileReader.onload = function () {
+                    const typedarray = new Uint8Array(this.result);
+                    pdfjsLib.getDocument(typedarray).promise.then(function (pdf) {
+                        document.getElementById("flipbook").innerHTML = "";
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            pdf.getPage(i).then(function (page) {
+                                const canvas = document.createElement("canvas");
+                                const context = canvas.getContext("2d");
+                                const viewport = page.getViewport({ scale: 1.5 });
+
+                                canvas.width = viewport.width;
+                                canvas.height = viewport.height;
+                                document.getElementById("flipbook").appendChild(canvas);
+
+                                page.render({ canvasContext: context, viewport: viewport });
+                            });
+                        }
+
+                        setTimeout(() => {
+                            document.getElementById("flipbook").turn({ width: 800, height: 600 });
+                        }, 1000);
+                    });
+                };
+                fileReader.readAsArrayBuffer(file);
+            }
+        });
+
+        // Dark Mode Toggle
+        document.getElementById("theme-toggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+        });
+
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
 
 </body>
 </html>
