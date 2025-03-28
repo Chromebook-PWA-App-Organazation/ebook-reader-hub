@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CBZ Reader</title>
     <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
 
@@ -16,9 +17,43 @@
     <div class="container">
         <input type="file" id="cbzFile" accept=".cbz" hidden>
         <label for="cbzFile" class="upload-button">📂 Choose CBZ File</label>
-        <div id="cbz-container"></div>
+        <div id="cbz-container" class="image-gallery"></div>
     </div>
 
-    <script src="./script.js"></script>
+    <script>
+        document.getElementById("cbzFile").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    JSZip.loadAsync(e.target.result).then(function (zip) {
+                        document.getElementById("cbz-container").innerHTML = "";
+                        const fileNames = Object.keys(zip.files).filter(name => name.match(/\.(jpg|jpeg|png)$/i)).sort();
+                        fileNames.forEach(name => {
+                            zip.files[name].async("blob").then(blob => {
+                                const img = document.createElement("img");
+                                img.src = URL.createObjectURL(blob);
+                                img.style.maxWidth = "100%";
+                                img.style.margin = "10px auto";
+                                document.getElementById("cbz-container").appendChild(img);
+                            });
+                        });
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            }
+        });
+
+        // Dark Mode Toggle
+        document.getElementById("theme-toggle").addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("darkMode", document.body.classList.contains("dark-mode") ? "enabled" : "disabled");
+        });
+
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+        }
+    </script>
+
 </body>
 </html>
