@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EPUB Reader</title>
     <link rel="stylesheet" href="./styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
-    <script src="./epub.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.88/epub.min.js"></script>
 </head>
 <body>
 
     <header class="app-bar">
+        <button id="back-button" class="back-button">⬅ Back</button>
         <h1>EPUB Reader</h1>
         <button id="theme-toggle" class="theme-toggle">🌙</button>
     </header>
@@ -19,23 +19,15 @@
         <input type="file" id="epubFile" accept=".epub" hidden>
         <label for="epubFile" class="upload-button">📂 Choose EPUB File</label>
         <div id="epub-container"></div>
-        <div id="area"></div>
     </div>
 
     <script>
         document.getElementById("epubFile").addEventListener("change", function (event) {
             const file = event.target.files[0];
             if (file) {
-                const book = ePub();
-                const rendition = book.renderTo("area", {
-                    width: "100%",
-                    height: "500px"
-                });
-
-                book.open(URL.createObjectURL(file));
-                book.ready.then(() => {
-                    rendition.display();
-                });
+                const book = ePub(URL.createObjectURL(file));
+                const rendition = book.renderTo("epub-container", { width: "100%", height: "500px" });
+                rendition.display();
             }
         });
 
@@ -48,6 +40,11 @@
         if (localStorage.getItem("darkMode") === "enabled") {
             document.body.classList.add("dark-mode");
         }
+
+        // Back Button
+        document.getElementById("back-button").addEventListener("click", function () {
+            window.location.href = "/ebook-reader-browser/";
+        });
     </script>
 
 </body>
