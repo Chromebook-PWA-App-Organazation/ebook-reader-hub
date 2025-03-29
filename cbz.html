@@ -6,123 +6,44 @@
     <title>CBZ Reader</title>
     <link rel="stylesheet" href="./styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <style>
-        body {
-            font-family: "Roboto", sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #00020a;
-            color: white;
-        }
-
-        .app-bar {
-            background-color: #A4C639;
-            color: black;
-            padding: 10px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .back-button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            padding: 10px;
-            cursor: pointer;
-            display: block;
-            text-align: left;
-        }
-
-        .container {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .button {
-            background: none;
-            color: white;
-            font-size: 18px;
-            padding: 10px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            display: inline-block;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: box-shadow 0.3s ease-in-out;
-        }
-
-        .button:hover {
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-
-        #imageContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-y: auto;
-            width: 100%;
-        }
-
-        .cbz-image {
-            width: 100vw;
-            height: auto;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        #cbzFile {
-            display: none;
-        }
-    </style>
 </head>
 <body>
 
     <header class="app-bar">
-        <h1>CBZ Reader</h1>
+        CBZ Reader
     </header>
 
-    <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt; Back</button>
+    <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt;</button>
 
     <div class="container">
-        <input type="file" id="cbzFile" accept=".cbz,.cbr">
+        <input type="file" id="cbzFile" accept=".cbz" hidden>
         <label for="cbzFile" class="button">📂 Choose CBZ File</label>
+        <div id="cbz-container" class="image-gallery"></div>
     </div>
 
-    <div id="imageContainer"></div>
-
     <script>
-        const imageContainer = document.getElementById('imageContainer');
-
-        document.getElementById('cbzFile').addEventListener('change', async function(event) {
+        document.getElementById("cbzFile").addEventListener("change", function (event) {
             const file = event.target.files[0];
-            if (!file) return;
-
-            await loadBook(file);
-        });
-
-        async function loadBook(file) {
-            const zip = new JSZip();
-            const zipData = await file.arrayBuffer();
-            const contents = await zip.loadAsync(zipData);
-
-            const imageFiles = Object.keys(contents.files)
-                .filter(filename => filename.match(/\.(jpg|jpeg|png|gif)$/i))
-                .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-
-            imageContainer.innerHTML = '';
-
-            for (const filename of imageFiles) {
-                const imgData = await contents.files[filename].async('blob');
-                const imgUrl = URL.createObjectURL(imgData);
-
-                const img = document.createElement('img');
-                img.src = imgUrl;
-                img.classList.add("cbz-image");
-                imageContainer.appendChild(img);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    JSZip.loadAsync(e.target.result).then(function (zip) {
+                        document.getElementById("cbz-container").innerHTML = "";
+                        const fileNames = Object.keys(zip.files).filter(name => name.match(/\.(jpg|jpeg|png)$/i)).sort();
+                        fileNames.forEach(name => {
+                            zip.files[name].async("blob").then(blob => {
+                                const img = document.createElement("img");
+                                img.src = URL.createObjectURL(blob);
+                                img.style.maxWidth = "100%";
+                                img.style.margin = "10px auto";
+                                document.getElementById("cbz-container").appendChild(img);
+                            });
+                        });
+                    });
+                };
+                reader.readAsArrayBuffer(file);
             }
-        }
+        });
     </script>
 
 </body>
