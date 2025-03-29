@@ -11,10 +11,10 @@
 <body>
 
     <header class="app-bar">
-        <h1>EPUB Reader</h1>
+        EPUB Reader
     </header>
 
-    <button onclick="history.back()" class="back-button">&lt; Back</button>
+    <button class="back-button" onclick="window.location.href='/ebook-reader-browser/'">&lt;</button>
 
     <div class="container">
         <input type="file" id="epubFile" accept=".epub" hidden>
@@ -28,8 +28,8 @@
             const file = event.target.files[0];
             if (file) {
                 try {
-                    const fileURL = URL.createObjectURL(file); // Convert file to Blob URL
-                    const book = ePub(fileURL); // Load EPUB using Blob URL
+                    const fileURL = URL.createObjectURL(file);
+                    const book = ePub(fileURL);
                     const rendition = book.renderTo("epub-container", {
                         width: "100%",
                         height: "600px"
