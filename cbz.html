@@ -30,7 +30,9 @@
                 reader.onload = function (e) {
                     JSZip.loadAsync(e.target.result).then(function (zip) {
                         document.getElementById("cbz-container").innerHTML = "";
-                        const fileNames = Object.keys(zip.files).filter(name => name.match(/\.(jpg|jpeg|png)$/i)).sort();
+                        const fileNames = Object.keys(zip.files)
+                            .filter(name => name.match(/\.(jpg|jpeg|png)$/i))
+                            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
                         fileNames.forEach(name => {
                             zip.files[name].async("blob").then(blob => {
                                 const img = document.createElement("img");
