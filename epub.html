@@ -20,7 +20,7 @@
     <div class="container">
         <input type="file" id="epubFile" accept=".epub" hidden>
         <label for="epubFile" class="button">📂 Choose EPUB File</label>
-        <div id="epub-container" style="width: 100%; height: 600px;"></div>
+        <div id="epub-container" style="width: 100%; height: 600px; overflow: auto;"></div>
         <p id="error-message" style="color: red; display: none;">Error loading EPUB. Please check the file.</p>
     </div>
 
@@ -31,15 +31,49 @@
                 try {
                     const fileURL = URL.createObjectURL(file);
                     const book = ePub(fileURL);
-                    const rendition = book.renderTo("epub-container", {
-                        width: "100%",
-                        height: "600px"
-                    });
 
-                    rendition.display();
+                    book.loaded.spine.then(function(spine) {
+                        const container = document.getElementById("epub-container");
+                        container.innerHTML = ""; // Clear previous content
 
-                    book.ready.then(() => {
-                        rendition.display();
+                        spine.each(function(item) {
+                            item.load(book).then(function(content) {
+                                const blob = new Blob([content], { type: item.type });
+                                const blobURL = URL.createObjectURL(blob);
+                                const fileType = item.type.split('/')[0];
+
+                                if (fileType === 'text') {
+                                    const iframe = document.createElement('iframe');
+                                    iframe.src = blobURL;
+                                    iframe.style.width = "100%";
+                                    iframe.style.height = "600px";
+                                    iframe.onload = function() {
+                                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                                        iframeDoc.querySelectorAll('a[href]').forEach(function(link) {
+                                            link.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                const href = e.target.getAttribute('href');
+                                                if (href.startsWith('http')) {
+                                                    window.location.href = href;
+                                                } else {
+                                                    alert('Link redirect within EPUB not supported: ' + href);
+                                                }
+                                            });
+                                        });
+                                    };
+                                    container.appendChild(iframe);
+                                } else if (fileType === 'image') {
+                                    const img = document.createElement('img');
+                                    img.src = blobURL;
+                                    img.style.width = "100%";
+                                    container.appendChild(img);
+                                }
+                            }).catch(err => {
+                                console.error("EPUB Load Error:", err);
+                                document.getElementById("error-message").textContent = "Error loading EPUB: " + err.message;
+                                document.getElementById("error-message").style.display = "block";
+                            });
+                        });
                     }).catch(err => {
                         console.error("EPUB Load Error:", err);
                         document.getElementById("error-message").textContent = "Error loading EPUB: " + err.message;
